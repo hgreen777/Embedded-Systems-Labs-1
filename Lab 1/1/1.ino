@@ -3,38 +3,46 @@
 #include <Wire.h>
 #include <Adafruit_RGBLCDShield.h>
 #include<utility/Adafruit_MCP23017.h>
-Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield(); // Create lcd object which
-has methods to control the display
+
+Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield(); // Create lcd object which has methods to control the display
 // lcd.write() prints the variable one character at a time
 // lcd.print(var); prints the variable var to the display
+
 void basicInput();
 void slightlyBetterInput();
 void writingToLCD();
 void printing();
+
 char incomingChar = 0;
 String incomingString = "";
+
 void setup() {
-Serial.begin(9600); // Define the baud rate for serial communication.
-lcd.begin(16,2); // lcd.begin(cols,rows); Not 0 indexed
-lcd.setBacklight(1); // 0->7 for colours
-lcd.setCursor(0,0); // lcd.setCursor(x, y);
-lcd.println("Hello World"); // Adds characters to the end (probs escape
-character for newline)
-lcd.setCursor(0,1);
-lcd.print("Hello "); lcd.write("World"); // ??
-Serial.println("Hello, World!");
-String my_str = "Hello World";
-char letter = my_str[0]; // alternatively my_str.charAt(n)
-Serial.println(letter);
-//String lower_my_str = my_str.toLowerCase(); <-- Does not return anything,
-mutates the original string
-my_str.toLowerCase();
-Serial.println(my_str);
+  Serial.begin(9600); // Define the baud rate for serial communication.
+
+  lcd.begin(16,2); // lcd.begin(cols,rows); Not 0 indexed
+  lcd.setBacklight(1); // 0->7 for colours
+  lcd.setCursor(0,0); // lcd.setCursor(x, y);
+
+  lcd.println("Hello World"); // Adds characters to the end (probs escape character for newline)
+  lcd.setCursor(0,1);
+  lcd.print("Hello "); lcd.write("World"); // ??
+  
+  Serial.println("Hello, World!");
+
+  String my_str = "Hello World";
+  char letter = my_str[0]; // alternatively my_str.charAt(n)
+  Serial.println(letter);
+  //String lower_my_str = my_str.toLowerCase(); <-- Does not return anything,
+  mutates the original string
+  my_str.toLowerCase();
+  Serial.println(my_str);
 }
+
 void loop() {
-//basicInput();
-slightlyBetterInput();
+  //basicInput();
+  slightlyBetterInput();
 }
+
 void basicInput() {
   // Serial.available gets the num of bytes (characters) available for reading from the serial port.
   // [data that has already arrived and stored in the serial recieve buffer (holds 64bytes)]
@@ -43,28 +51,34 @@ void basicInput() {
     // the second line takes the rest of the buffer as a string to print it.
     incomingChar = Serial.read(); // Takes each character from the buffer
     incomingString = Serial.readString(); // Takes whole string from buffer
+
     Serial.print("String recieved: ");
     Serial.println(incomingString);
     Serial.print("I recieved: ");
     Serial.println(incomingChar);
   }
 }
+
 void slightlyBetterInput() {
-    Serial.println("Enter data:");
-    // Paused execution until data available wheres if statement allows further execution
-    while (Serial.available() == 0) {} // Wait for available data
-    String inputString = Serial.readString(); // read until timeout [ie end of buffer]
-    // Serial.readStringUntil() -> reads till terminating character (char). What is the benefit??
-    inputString.trim(); // remove any \r \n whitespace at the end of the string
+  Serial.println("Enter data:");
+  // Paused execution until data available wheres if statement allows further execution
+  while (Serial.available() == 0) {} // Wait for available data
+
+  String inputString = Serial.readString(); // read until timeout [ie end of buffer]
+  // Serial.readStringUntil() -> reads till terminating character (char). What is the benefit??
+  inputString.trim(); // remove any \r \n whitespace at the end of the string
+
   if (inputString == "COA202") {
     Serial.println("This is Embedded Systems Programming");
   } else {
     Serial.println("This is something else");
   }
 }
+
 void writingToLCD() {
 
 }
+
 void printing() {
   // Numbers get casted to string automatically
   // Conversions for nums can be done natively in print aswell (also using
