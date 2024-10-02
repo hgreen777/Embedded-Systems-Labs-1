@@ -11,11 +11,13 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();  // Create lcd object which
 void basicInput();
 void slightlyBetterInput();
 void writingToLCD();
+void lcdButtons();
 void stringFunction();
 void printing();
 
 char incomingChar = 0;
 String incomingString = "";
+uint8_t buttons;
 
 void setup() {
   Serial.begin(9600);  // Define the baud rate for serial communication.
@@ -29,15 +31,13 @@ void setup() {
   // ^^ fix could be a constant for hello world and trim it 
   // Flash memory to save on memory -> see printing 
   lcd.setCursor(0, 1); 
-
-
   
 
 }
 
 void loop() {
-  //basicInput();
-  slightlyBetterInput();
+  
+  lcdButtons();
 }
 
 // Functions
@@ -90,6 +90,25 @@ void writingToLCD() {
   lcd.write('o');
   lcd.print("rld");
 
+}
+
+void lcdButtons() {
+  buttons = lcd.readButtons();
+  //Serial.println(buttons);
+  // Buttons usually returns 0, however if a button is pressed, then a number is displayed (the number correlating with the byte)
+  // ie 0 = nothing, 1 = select, 2 = right, 4 = down, 8 = up, left = 16 etc
+  // Workout how to print the original bit to understand how that can be done 
+  // Clear the screen with new messages ""
+  // When button release, should be hidden 
+  // Write a function to clear x spaces from starting position x 
+
+  if (buttons & BUTTON_RIGHT) {
+    lcd.setCursor(0, 1); 
+    lcd.print("Right");
+  } else if (buttons & BUTTON_DOWN) {
+    lcd.setCursor(0, 1); 
+    lcd.print("Down");
+  }
 }
 
 void stringFunction() {
