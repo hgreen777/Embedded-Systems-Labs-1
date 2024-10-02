@@ -15,6 +15,8 @@ void lcdButtons();
 void stringFunction();
 void printing();
 
+void clearSpaces(int x);
+
 char incomingChar = 0;
 String incomingString = "";
 uint8_t buttons;
@@ -94,21 +96,40 @@ void writingToLCD() {
 
 void lcdButtons() {
   buttons = lcd.readButtons();
-  //Serial.println(buttons);
+  // Bitstring (binary integer) each bit corresponds to a button
+  // the last bit, least significant BIT is for select (1), then right (10 = 2) etc etc
+
+  //Serial.println(uint8_t(buttons), BIN);
   // Buttons usually returns 0, however if a button is pressed, then a number is displayed (the number correlating with the byte)
   // ie 0 = nothing, 1 = select, 2 = right, 4 = down, 8 = up, left = 16 etc
-  // Workout how to print the original bit to understand how that can be done 
   // Clear the screen with new messages ""
   // When button release, should be hidden 
   // Write a function to clear x spaces from starting position x 
-
+  lcd.setCursor(0,1);
   if (buttons & BUTTON_RIGHT) {
-    lcd.setCursor(0, 1); 
-    lcd.print("Right");
+    lcd.print("RIGHT");
   } else if (buttons & BUTTON_DOWN) {
-    lcd.setCursor(0, 1); 
-    lcd.print("Down");
+    lcd.print("DOWN");
+  } else if (buttons & BUTTON_LEFT) {
+    lcd.print("LEFT");
+  } else if (buttons & BUTTON_UP) {
+    lcd.print("UP");
+  } else if (buttons & BUTTON_SELECT) {
+    lcd.print("SELECT");
+  } else if (!buttons) {
+    clearSpaces(6);
   }
+
+}
+
+void clearSpaces(int x) {
+  lcd.setCursor(0,1);
+
+  for (int i = 0; i < x + 1; i++) {
+    lcd.write(' ');
+  }
+
+  lcd.setCursor(0, 1);
 }
 
 void stringFunction() {
